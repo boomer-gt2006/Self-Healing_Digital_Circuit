@@ -1,0 +1,14 @@
+# Xilinx/Vivado build artifacts
+.Xil/
+xsim.dir/
+*.wdb
+*.vcd
+*.pb
+*.jou
+*.log
+*.backup.jou
+
+# Simulation outputs
+sim.out
+sim_adaptive.out
+dfx_runtime.txt

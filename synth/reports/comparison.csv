@@ -1,0 +1,4 @@
+Design,LUTs,FFs,DSPs,Total Power (W),Dynamic (W),Static (W),WNS (ns),Min Period (ns),Max Freq (MHz)
+Base ALU,36,9,0,0.266,0.161,0.105,N/A (no clocks),N/A,N/A
+Traditional TMR,87,9,0,0.849,0.734,0.115,N/A (no clocks),N/A,N/A
+Adaptive Redundancy,125,44,0,1.544,1.414,0.13,N/A (no clocks),N/A,N/A
