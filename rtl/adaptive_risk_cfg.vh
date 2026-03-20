@@ -1,0 +1,5 @@
+`define ADP_WINDOW_CYCLES 64
+`define ADP_TOGGLE_MED 10
+`define ADP_TOGGLE_HIGH 30
+`define ADP_ERROR_MED 2
+`define ADP_ERROR_HIGH 4

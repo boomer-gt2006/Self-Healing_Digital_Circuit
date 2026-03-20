@@ -1,0 +1,7 @@
+`define TB_CLK_HALF 5
+`define TB_N_RANDOM 10000
+`define TB_N_CORNER 500
+`define TB_N_WARMUP 512
+`define TB_N_BURST 1000
+`define TB_SEED 32'hDEAD_BEEF
+`define TB_FAULT_PROB_PCT 50

@@ -1,0 +1,5 @@
+policy_id,policy_name,s8_adaptive_pct,s9_adaptive_pct,s13_adaptive_pct,s11_adaptive_pct,grand_adaptive_pct
+0,Residue-Only,100.00,100.00,100.00,83.13,85.55
+1,Voter-Only,100.00,100.00,100.00,87.40,85.83
+2,Fused-AND,100.00,100.00,100.00,87.40,85.83
+3,Fused-OR,100.00,100.00,100.00,87.40,85.83

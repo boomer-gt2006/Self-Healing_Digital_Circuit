@@ -18,9 +18,9 @@
 //     High error count → degraded module health.
 //
 //   Risk Score Encoding:
-//     2'b00 — LOW    : 1 module active
-//     2'b01 — MEDIUM : 2 modules active
-//     2'b10 — HIGH   : 3 modules active (full TMR)
+//     2'b00 — LOW    : Single mode
+//     2'b01 — MEDIUM : TMR mode
+//     2'b10 — HIGH   : PMR mode
 //
 // Parameters:
 //   WINDOW_CYCLES - width of observation window in clock cycles

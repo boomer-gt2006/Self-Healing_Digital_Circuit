@@ -1,12 +1,12 @@
 # ============================================================
 # synth_tmr.tcl
 # Vivado Non-Project Synthesis — Traditional TMR
-# Target : xc7z020clg400-1  (Zynq, e.g. Zybo / Pynq-Z2)
+# Target : xc7a35tcpg236-1  (Artix-7 35T, e.g. Basys 3 / Arty A7-35T)
 # Usage  : vivado -mode batch -source synth_tmr.tcl
 # ============================================================
 
 set DESIGN     "top_tmr"
-set PART       "xc7z020clg400-1"
+set PART       "xc7a35tcpg236-1"
 set SCRIPT_DIR [file dirname [file normalize [info script]]]
 set RTL_DIR    [file normalize [file join $SCRIPT_DIR .. rtl]]
 set OUT_DIR    [file normalize [file join $SCRIPT_DIR reports tmr]]

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Hybrid Adaptive Topology Flowchart</title>
+  <desc id="desc">Five ALU lanes with residue checkers feeding Adaptive TMR and Adaptive PMR voters with risk-based mode selection.</desc>
+
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .panel { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; rx: 14; }
+      .alu { fill: #e0f2fe; stroke: #0284c7; stroke-width: 2; rx: 10; }
+      .res { fill: #ecfccb; stroke: #65a30d; stroke-width: 2; rx: 10; }
+      .vote { fill: #fef3c7; stroke: #d97706; stroke-width: 2; rx: 10; }
+      .ctrl { fill: #fee2e2; stroke: #dc2626; stroke-width: 2; rx: 10; }
+      .mux { fill: #ede9fe; stroke: #7c3aed; stroke-width: 2; rx: 10; }
+      .title { font: 700 34px 'Segoe UI', Tahoma, sans-serif; fill: #0f172a; }
+      .subtitle { font: 600 22px 'Segoe UI', Tahoma, sans-serif; fill: #334155; }
+      .label { font: 600 18px 'Segoe UI', Tahoma, sans-serif; fill: #0f172a; }
+      .small { font: 500 15px 'Segoe UI', Tahoma, sans-serif; fill: #1e293b; }
+      .lane { font: 600 17px 'Segoe UI', Tahoma, sans-serif; fill: #0f172a; }
+      .chip { filter: drop-shadow(0 2px 2px rgba(15, 23, 42, 0.12)); }
+      .dashed { stroke-dasharray: 7 6; }
+      .arrow { stroke: #334155; stroke-width: 2.5; fill: none; marker-end: url(#arr); }
+      .event { stroke: #b91c1c; stroke-width: 2.3; fill: none; marker-end: url(#arr-red); }
+      .data { stroke: #0f766e; stroke-width: 2.3; fill: none; marker-end: url(#arr-green); }
+    </style>
+
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#334155"/>
+    </marker>
+    <marker id="arr-red" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#b91c1c"/>
+    </marker>
+    <marker id="arr-green" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#0f766e"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1600" height="900"/>
+  <text class="title" x="800" y="58" text-anchor="middle">Hybrid Adaptive TMR/PMR with Residue Supervision</text>
+  <text class="subtitle" x="800" y="90" text-anchor="middle">System Topology Dataflow</text>
+
+  <rect class="panel" x="40" y="120" width="620" height="720"/>
+  <text class="label" x="350" y="155" text-anchor="middle">Five Parallel Compute Lanes</text>
+
+  <rect class="alu chip" x="80" y="190" width="170" height="70"/>
+  <rect class="res chip" x="280" y="190" width="170" height="70"/>
+  <text class="lane" x="165" y="233" text-anchor="middle">ALU0</text>
+  <text class="lane" x="365" y="233" text-anchor="middle">Residue0</text>
+
+  <rect class="alu chip" x="80" y="300" width="170" height="70"/>
+  <rect class="res chip" x="280" y="300" width="170" height="70"/>
+  <text class="lane" x="165" y="343" text-anchor="middle">ALU1</text>
+  <text class="lane" x="365" y="343" text-anchor="middle">Residue1</text>
+
+  <rect class="alu chip" x="80" y="410" width="170" height="70"/>
+  <rect class="res chip" x="280" y="410" width="170" height="70"/>
+  <text class="lane" x="165" y="453" text-anchor="middle">ALU2</text>
+  <text class="lane" x="365" y="453" text-anchor="middle">Residue2</text>
+
+  <rect class="alu chip" x="80" y="520" width="170" height="70"/>
+  <rect class="res chip" x="280" y="520" width="170" height="70"/>
+  <text class="lane" x="165" y="563" text-anchor="middle">ALU3</text>
+  <text class="lane" x="365" y="563" text-anchor="middle">Residue3</text>
+
+  <rect class="alu chip" x="80" y="630" width="170" height="70"/>
+  <rect class="res chip" x="280" y="630" width="170" height="70"/>
+  <text class="lane" x="165" y="673" text-anchor="middle">ALU4</text>
+  <text class="lane" x="365" y="673" text-anchor="middle">Residue4</text>
+
+  <text class="small" x="100" y="740">Inputs: a, b, op</text>
+  <text class="small" x="280" y="740">Outputs: valid, mismatch</text>
+
+  <line class="data" x1="250" y1="225" x2="280" y2="225"/>
+  <line class="data" x1="250" y1="335" x2="280" y2="335"/>
+  <line class="data" x1="250" y1="445" x2="280" y2="445"/>
+  <line class="data" x1="250" y1="555" x2="280" y2="555"/>
+  <line class="data" x1="250" y1="665" x2="280" y2="665"/>
+
+  <rect class="panel" x="700" y="120" width="860" height="720"/>
+  <text class="label" x="1130" y="155" text-anchor="middle">Adaptive Voting and Control Plane</text>
+
+  <rect class="vote chip" x="760" y="240" width="300" height="100"/>
+  <text class="label" x="910" y="282" text-anchor="middle">Adaptive TMR Voter</text>
+  <text class="small" x="910" y="310" text-anchor="middle">uses ALU0-ALU2 active lanes</text>
+
+  <rect class="vote chip" x="760" y="420" width="300" height="100"/>
+  <text class="label" x="910" y="462" text-anchor="middle">Adaptive PMR Voter</text>
+  <text class="small" x="910" y="490" text-anchor="middle">uses ALU0-ALU4 active lanes</text>
+
+  <rect class="mux chip" x="1120" y="330" width="180" height="110"/>
+  <text class="label" x="1210" y="380" text-anchor="middle">Mode MUX</text>
+  <text class="small" x="1210" y="405" text-anchor="middle">Single/TMR/PMR</text>
+
+  <rect class="ctrl chip" x="1360" y="280" width="170" height="120"/>
+  <text class="label" x="1445" y="325" text-anchor="middle">Risk</text>
+  <text class="label" x="1445" y="350" text-anchor="middle">Estimator</text>
+  <text class="small" x="1445" y="374" text-anchor="middle">low/med/high</text>
+
+  <rect class="ctrl chip" x="1360" y="470" width="170" height="170"/>
+  <text class="label" x="1445" y="520" text-anchor="middle">Redundancy</text>
+  <text class="label" x="1445" y="545" text-anchor="middle">Controller</text>
+  <text class="small" x="1445" y="572" text-anchor="middle">policy select</text>
+  <text class="small" x="1445" y="595" text-anchor="middle">quarantine FSM</text>
+
+  <rect class="mux chip" x="1120" y="640" width="240" height="90"/>
+  <text class="label" x="1240" y="690" text-anchor="middle">Protected Output y</text>
+
+  <path class="arrow" d="M450 225 C620 225, 620 280, 760 280"/>
+  <path class="arrow" d="M450 335 C620 335, 620 300, 760 300"/>
+  <path class="arrow" d="M450 445 C620 445, 620 460, 760 460"/>
+  <path class="arrow" d="M450 555 C620 555, 620 480, 760 480"/>
+  <path class="arrow" d="M450 665 C620 665, 620 500, 760 500"/>
+
+  <line class="arrow" x1="1060" y1="290" x2="1120" y2="360"/>
+  <line class="arrow" x1="1060" y1="470" x2="1120" y2="410"/>
+  <line class="arrow" x1="1300" y1="385" x2="1360" y2="340"/>
+  <line class="arrow" x1="1360" y1="565" x2="1300" y2="410"/>
+  <line class="arrow" x1="1210" y1="440" x2="1210" y2="640"/>
+
+  <path class="event" d="M450 225 C560 170, 1320 170, 1360 320"/>
+  <path class="event" d="M450 335 C560 210, 1320 210, 1360 332"/>
+  <path class="event" d="M450 445 C560 250, 1320 250, 1360 344"/>
+  <path class="event" d="M450 555 C560 290, 1320 290, 1360 356"/>
+  <path class="event" d="M450 665 C560 330, 1320 330, 1360 368"/>
+
+  <rect x="780" y="760" width="730" height="54" class="panel dashed"/>
+  <text class="small" x="800" y="792">Decision policy: risk=LOW -> Single, risk=MEDIUM -> Adaptive TMR, risk=HIGH -> Adaptive PMR</text>
+</svg>

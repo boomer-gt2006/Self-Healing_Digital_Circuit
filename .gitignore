@@ -12,3 +12,17 @@ xsim.dir/
 sim.out
 sim_adaptive.out
 dfx_runtime.txt
+
+# Local environment/cache
+.venv/
+__pycache__/
+*.pyc
+
+# LaTeX temporary files
+docs/*.aux
+docs/*.out
+docs/*.toc
+docs/*.fls
+docs/*.fdb_latexmk
+docs/texput.log
+docs/compile.log

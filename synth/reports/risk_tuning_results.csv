@@ -1,0 +1,11 @@
+config,window,toggle_med,toggle_high,error_med,error_high,adaptive_accuracy_pct,adaptive_power_mw,status,notes
+default,64,10,30,2,4,84.2400,0.201365249,ok,
+aggressive_a,64,6,18,1,2,84.2400,0.201365249,ok,
+aggressive_b,64,8,24,1,3,84.2200,0.202169330,ok,
+balanced_a,64,8,28,2,4,84.2400,0.201365249,ok,
+balanced_b,64,10,26,2,3,84.2400,0.201365249,ok,
+error_sensitive,64,12,36,1,2,84.2400,0.201365249,ok,
+toggle_sensitive,64,6,22,3,5,84.2400,0.201365249,ok,
+conservative_a,64,12,36,3,5,84.2400,0.201365249,ok,
+conservative_b,64,14,42,4,6,84.2400,0.201365249,ok,
+very_conservative,64,16,48,4,8,84.2400,0.201366274,ok,

@@ -1,12 +1,12 @@
 # ============================================================
 # synth_adaptive.tcl
 # Vivado Non-Project Synthesis — Adaptive Redundancy
-# Target : xc7z020clg400-1  (Zynq, e.g. Zybo / Pynq-Z2)
+# Target : xc7a35tcpg236-1  (Artix-7 35T, e.g. Basys 3 / Arty A7-35T)
 # Usage  : vivado -mode batch -source synth_adaptive.tcl
 # ============================================================
 
 set DESIGN     "top_adaptive"
-set PART       "xc7z020clg400-1"
+set PART       "xc7a35tcpg236-1"
 set SCRIPT_DIR [file dirname [file normalize [info script]]]
 set RTL_DIR    [file normalize [file join $SCRIPT_DIR .. rtl]]
 set OUT_DIR    [file normalize [file join $SCRIPT_DIR reports adaptive]]
@@ -18,6 +18,8 @@ file mkdir $OUT_DIR
 read_verilog [file join $RTL_DIR alu.v]
 read_verilog [file join $RTL_DIR fault_injector.v]
 read_verilog [file join $RTL_DIR majority_voter.v]
+read_verilog [file join $RTL_DIR penta_voter.v]
+read_verilog [file join $RTL_DIR residue_checker.v]
 read_verilog [file join $RTL_DIR risk_estimator.v]
 read_verilog [file join $RTL_DIR redundancy_controller.v]
 read_verilog [file join $RTL_DIR top_adaptive.v]
