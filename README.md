@@ -1,385 +1,130 @@
-# Self-Healing Digital Circuit with Adaptive Redundancy
+﻿# Self-Healing Digital Circuit
 
-## Abstract
+Hybrid adaptive redundancy architecture for fault-tolerant digital computation using runtime risk estimation, modulo-3 residue checking, and configurable quarantine policy control.
 
-Reliability is a critical requirement in modern digital systems used in aerospace electronics, autonomous systems, and safety-critical processors. Conventional digital circuits fail when a hardware module becomes faulty, leading to system failure.
+## Overview
 
-This project proposes a **Self-Healing Digital Circuit Architecture** that detects faults and dynamically activates redundant modules to maintain correct operation. Unlike traditional redundancy systems that permanently replicate hardware, the proposed architecture introduces **Adaptive Redundancy**, where the number of active modules is determined by the current system risk level.
+This project implements and evaluates three architecture classes:
 
-The system monitors runtime parameters such as switching activity and error frequency to estimate system risk. Based on this estimation, the controller dynamically switches between **single-module operation, dual modular redundancy, and triple modular redundancy**. This approach improves system reliability while minimizing unnecessary power consumption.
+- Static TMR baseline (fixed 3-way redundancy)
+- Adaptive (no residue, no quarantine)
+- Adaptive (+residue +quarantine), with runtime switching between:
+  - Adaptive TMR mode
+  - Adaptive PMR mode (5-module voting)
 
----
+The adaptive flow increases fault coverage while reducing unnecessary redundancy in low-risk windows.
 
-# Problem Statement
+## Key Features
 
-Digital systems deployed in **high-reliability environments** such as satellites, autonomous vehicles, and industrial control systems must tolerate hardware faults.
+- Runtime risk estimator driven by switching activity and mismatch/error events
+- Dynamic mode selection: Single / Adaptive TMR / Adaptive PMR
+- Per-module modulo-3 residue checker for arithmetic fault localization
+- Per-module quarantine FSM with configurable event fusion policies:
+  - Policy 0: Residue-only
+  - Policy 1: Voter-only
+  - Policy 2: Fused-AND
+  - Policy 3: Fused-OR
+- Fault injection framework and multi-scenario accuracy sweeps (S0-S14)
+- Monte Carlo sweep scripts and report-generation flow
 
-Traditional fault tolerance techniques such as **Triple Modular Redundancy (TMR)** improve reliability but significantly increase **power consumption and hardware area**.
+## Repository Structure
 
-The challenge is to design a **self-healing digital architecture that maintains high reliability while minimizing hardware overhead and power consumption**.
-
----
-
-# Objectives
-
-* Design a **fault-tolerant digital architecture** capable of recovering from hardware failures.
-* Implement **runtime fault detection mechanisms**.
-* Develop a **risk estimation unit** that predicts the likelihood of faults.
-* Implement **adaptive redundancy control** to activate redundancy only when necessary.
-* Evaluate the design based on **power, area, latency, and reliability metrics**.
-
----
-
-# System Architecture
-
-The proposed architecture consists of the following modules:
-
-1. Processing Units
-2. Fault Detection Unit
-3. Risk Estimation Engine
-4. Adaptive Redundancy Controller
-5. Output Selection Logic
-6. Fault Injection Framework
-
----
-
-# High Level Architecture
-
-```
-            +--------------------+
-Inputs ---->|  Processing Unit 1 |
-            +--------------------+
-                      |
-            +--------------------+
-Inputs ---->|  Processing Unit 2 |
-            +--------------------+
-                      |
-            +--------------------+
-Inputs ---->|  Processing Unit 3 |
-            +--------------------+
-                      |
-                +-----------+
-                | Majority  |
-                |  Voter    |
-                +-----------+
-                      |
-                   Output
-```
-
----
-
-# Redundancy Techniques
-
-## Dual Modular Redundancy (DMR)
-
-Two identical modules compute the same operation.
-
-```
-Module A
-Module B
-   |
-Comparator
+```text
+Self-Healing_Digital_Circuit/
+  rtl/
+    alu.v
+    residue_checker.v
+    risk_estimator.v
+    redundancy_controller.v
+    majority_voter.v
+    penta_voter.v
+    top_adaptive.v
+    top_adaptive_no_residue.v
+    top_tmr.v
+    top_dmr.v
+    ...
+  testbench/
+    tb_accuracy.v
+    tb_accuracy_cfg.vh
+    tb_accuracy_policy_0.v
+    tb_accuracy_policy_1.v
+    tb_accuracy_policy_2.v
+    tb_accuracy_policy_3.v
+    tb_accuracy_no_residue.v
+    tb_accuracy_fused_or.v
+    tb_residue_comparison.v
+    ...
+  sim/
+    xsim_run_accuracy.tcl
+    xsim_run_adaptive.tcl
+    xsim_run_alu.tcl
+    xsim_run_tmr.tcl
+  synth/
+    run_synthesis.bat
+    synth_alu.tcl
+    synth_tmr.tcl
+    synth_adaptive.tcl
+    synth_alu_array.tcl
+    synth_alu_array_tmr.tcl
+    monte_carlo_sweep.py
+    power_estimation.py
+    reports/
+  docs/
+    report.tex
+    report.pdf
+    run_accuracy_sim.bat
+    run_residue_comparison.bat
 ```
 
-If the outputs mismatch, a fault is detected.
+## Quick Start (Windows + Vivado)
 
----
+1. Ensure Vivado tools (`xvlog`, `xelab`, `xsim`) are in `PATH`.
+2. Run scenario accuracy simulation:
 
-## Triple Modular Redundancy (TMR)
-
-Three identical modules are used with majority voting.
-
-```
-Module A
-Module B
-Module C
-   |
-Majority Voter
-   |
-Output
+```bat
+cd docs
+run_accuracy_sim.bat
 ```
 
-Even if one module fails, the system continues functioning correctly.
+3. Build synthesis reports:
 
-TMR is widely used in **spacecraft and mission-critical electronics**.
-
----
-
-# Adaptive Redundancy
-
-Traditional redundancy always runs all modules simultaneously, which increases power consumption.
-
-This project introduces **Adaptive Redundancy**, where the system dynamically selects the required redundancy level.
-
-| Risk Level  | Active Modules |
-| ----------- | -------------- |
-| Low Risk    | 1 Module       |
-| Medium Risk | 2 Modules      |
-| High Risk   | 3 Modules      |
-
-This significantly reduces **power overhead compared to traditional TMR systems**.
-
----
-
-# Risk Estimation Engine
-
-The **Risk Estimation Unit** determines the probability of system failure using runtime parameters.
-
-## 1. Switching Activity Monitoring
-
-High switching activity increases the probability of glitches and timing failures.
-
-Example logic:
-
-```
-if (signal != previous_signal)
-    toggle_count++
+```bat
+cd synth
+run_synthesis.bat
 ```
 
-Risk classification:
+4. Compile the paper/report:
 
-| Toggle Count | Risk Level |
-| ------------ | ---------- |
-| < 10         | Low        |
-| 10 – 30      | Medium     |
-| > 30         | High       |
-
----
-
-## 2. Error Detection Monitoring
-
-Outputs of redundant modules are compared.
-
-```
-compare(ALU1, ALU2)
+```bat
+cd docs
+pdflatex -interaction=nonstopmode report.tex
+pdflatex -interaction=nonstopmode report.tex
 ```
 
-If mismatches occur frequently, system risk increases.
+## Policy Evaluation
 
-| Error Count | Risk Level |
-| ----------- | ---------- |
-| 0 – 1       | Low        |
-| 2 – 3       | Medium     |
-| > 3         | High       |
+Use policy-specific testbenches in `testbench/` to compare quarantine strategies:
 
----
+- `tb_accuracy_policy_0.v` (Residue-only)
+- `tb_accuracy_policy_1.v` (Voter-only)
+- `tb_accuracy_policy_2.v` (Fused-AND)
+- `tb_accuracy_policy_3.v` (Fused-OR)
 
-## 3. Temperature Monitoring (Optional)
+Current sweeps indicate policy 1/2/3 tie for best grand-total accuracy in S0-S14 evaluation, while residue-only is lower in mixed-operation scenarios.
 
-Higher temperatures increase transistor leakage and timing errors.
+## Selected Results (from current report)
 
-| Temperature | Risk Level |
-| ----------- | ---------- |
-| < 50°C      | Low        |
-| 50–70°C     | Medium     |
-| > 70°C      | High       |
+- Static TMR grand-total accuracy: 65.34%
+- Adaptive (+residue +quarantine) grand-total accuracy (best policy): 85.83%
+- Scenario S11 accuracy for adaptive (+R+Q, best policy): 87.40%
 
----
+See `docs/report.pdf` and `synth/reports/` for detailed tables, Monte Carlo outputs, and power summaries.
 
-# Adaptive Redundancy Controller
+## Notes
 
-The controller decides how many modules should be active.
+- Generated simulator artifacts (`*.wdb`, `*.vcd`, `xsim.dir/`, logs) are git-ignored.
+- If a simulator file is locked (for example, `xsim.jou`), close Vivado/XSim processes before cleanup.
 
-Example logic:
+## License
 
-```
-if risk_score < threshold1
-    enable 1 module
-else if risk_score < threshold2
-    enable 2 modules
-else
-    enable 3 modules
-```
-
----
-
-# Fault Injection Framework
-
-To test system reliability, faults are artificially injected into the system.
-
-Example fault models:
-
-* Stuck-at-0 faults
-* Stuck-at-1 faults
-* Bit flips
-* Random signal corruption
-
-Example Verilog concept:
-
-```
-assign faulty_output = original_output ^ fault_signal;
-```
-
-This helps demonstrate the system's **fault recovery capability**.
-
----
-
-# Unique Research Contributions
-
-This project introduces several ideas that make it more advanced than a traditional redundancy design.
-
-## 1. Adaptive Redundancy Architecture
-
-The system dynamically adjusts redundancy levels based on system risk.
-
-Benefits:
-
-* Lower power consumption
-* Improved reliability
-* Adaptive fault tolerance
-
----
-
-## 2. Selective Triple Modular Redundancy
-
-Instead of applying TMR to the entire system, redundancy can be applied only to **critical modules**.
-
-Example:
-
-```
-ALU → TMR protected
-Control Logic → single module
-Memory Interface → DMR
-```
-
-This significantly reduces **area and power overhead**.
-
----
-
-## 3. Runtime Risk Monitoring
-
-The system continuously monitors runtime signals to predict failure probability.
-
-Risk parameters include:
-
-* switching activity
-* error frequency
-* temperature
-
----
-
-## 4. Fault Injection Framework
-
-A configurable fault injection system allows systematic testing of the architecture.
-
-This enables evaluation of:
-
-* fault detection rate
-* fault masking capability
-* recovery latency
-
----
-
-## 5. Reconfigurable Self-Healing Architecture (Future Work)
-
-In advanced versions, the FPGA could dynamically **reconfigure faulty modules** using partial reconfiguration.
-
-This would allow the system to **replace faulty logic blocks at runtime**.
-
----
-
-# Evaluation Metrics
-
-The system will be evaluated based on the following metrics.
-
-## Area
-
-Measured using **FPGA LUT utilization**.
-
-## Power
-
-Estimated using **Vivado Power Analysis**.
-
-## Timing
-
-Measured through **critical path delay**.
-
-## Fault Tolerance
-
-Percentage of faults successfully masked.
-
-Example comparison:
-
-| Design              | LUT Usage | Power          | Fault Tolerance  |
-| ------------------- | --------- | -------------- | ---------------- |
-| Standard ALU        | Low       | Low            | None             |
-| TMR ALU             | High      | Higher         | Survives 1 fault |
-| Adaptive Redundancy | Moderate  | Lower than TMR | High             |
-
----
-
-# Implementation Plan
-
-1. Implement a base **8-bit ALU** module.
-2. Instantiate multiple redundant ALU modules.
-3. Implement a **majority voter** circuit.
-4. Implement the **risk estimation engine**.
-5. Implement the **adaptive redundancy controller**.
-6. Add **fault injection capability**.
-7. Simulate the system using a **Verilog testbench**.
-8. Synthesize the design on FPGA.
-9. Analyze **power and reliability trade-offs**.
-
----
-
-# Project Structure
-
-```
-self-healing-digital-circuit/
-│
-├── rtl/
-│   ├── alu.v
-│   ├── majority_voter.v
-│   ├── fault_injector.v
-│   ├── risk_estimator.v
-│   ├── redundancy_controller.v
-│   └── top_module.v
-│
-├── testbench/
-│   └── tb_top.v
-│
-├── docs/
-│   └── architecture.md
-│
-└── README.md
-```
-
----
-
-# Applications
-
-Self-healing architectures are widely used in:
-
-* spacecraft electronics
-* autonomous vehicles
-* nuclear control systems
-* industrial automation
-* aerospace computing
-
----
-
-# Tools
-
-* Verilog HDL
-* Xilinx Vivado
-* FPGA development board
-* Vivado Power Analyzer
-
----
-
-# Future Improvements
-
-Possible future extensions include:
-
-* Machine learning based fault prediction
-* Dynamic voltage and frequency scaling integration
-* FPGA partial reconfiguration for runtime repair
-* Hardware Trojan detection integration
-
----
-
-# Conclusion
-
-This project demonstrates a **self-healing digital architecture capable of adaptive fault tolerance**. By dynamically adjusting redundancy levels based on system risk, the design achieves improved reliability while minimizing power overhead.
-
-Such architectures are increasingly important for **next-generation reliable computing systems deployed in safety-critical environments**.
+This repository currently has no explicit license file. Add a `LICENSE` file if redistribution terms are required.
